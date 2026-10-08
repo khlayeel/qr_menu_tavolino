@@ -18,14 +18,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function handleLogin(e) {
     e.preventDefault();
 
-    const email = document.getElementById('email').value;
+    const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
+    const button = document.getElementById('login-btn');
+    const label = button?.querySelector('.btn-label');
+
+    function setLoading(loading) {
+        if (!button) return;
+        button.disabled = loading;
+        button.classList.toggle('is-loading', loading);
+        if (label) label.textContent = loading ? 'Connexion…' : 'Se connecter';
+    }
 
     if (!email || !password) {
         Utils.showMessage('Tous les champs sont requis', 'error');
         return;
     }
 
+    setLoading(true);
     try {
         const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
@@ -39,6 +49,8 @@ async function handleLogin(e) {
     } catch (error) {
         console.error('[Auth] Login error:', error);
         Utils.showMessage('Email ou mot de passe incorrect', 'error');
+        setLoading(false);
+        document.getElementById('password')?.focus();
     }
 }
 

@@ -3,39 +3,325 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#141414">
+    <meta name="robots" content="noindex, nofollow">
     <title>QR Menu - Connexion</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #141414;
+            --ink-soft: #232323;
+            --tomato: #d6472e;
+            --tomato-dark: #b23a24;
+            --tomato-light: #e8947c;
+            --cream: #faf5eb;
+            --paper: #fffdf8;
+            --muted: #7a726b;
+            --border: #e7ddcf;
+            --text: #1c1a17;
+            --success: #1f9254;
+            --danger: #c0392b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: grid;
+            place-items: center;
+            padding: 24px 16px;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(60rem 30rem at 50% -10%, rgba(214, 71, 46, .22), transparent 60%),
+                radial-gradient(40rem 24rem at 100% 100%, rgba(232, 148, 124, .12), transparent 60%),
+                var(--ink);
+        }
+
+        .login-wrap { width: 100%; max-width: 420px; }
+
+        /* ---------- En-tête de marque ---------- */
+        .brand { text-align: center; margin-bottom: 26px; color: #fff; }
+        .brand-mark {
+            display: inline-block;
+            margin-bottom: 10px;
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .28em;
+            color: rgba(255, 255, 255, .6);
+        }
+        .brand h1 {
+            font: 400 clamp(3rem, 14vw, 4.2rem)/1 'Alex Brush', cursive;
+            letter-spacing: .01em;
+        }
+        .brand p {
+            margin-top: 10px;
+            font-size: .95rem;
+            color: rgba(255, 255, 255, .7);
+        }
+        .brand-rule {
+            width: 54px;
+            height: 1px;
+            margin: 14px auto 0;
+            background: var(--tomato-light);
+            opacity: .7;
+        }
+
+        /* ---------- Carte du formulaire ---------- */
+        .card {
+            padding: 30px 26px 26px;
+            border-radius: 20px;
+            background: var(--paper);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, .45), 0 0 0 1px rgba(255, 255, 255, .06);
+        }
+        .card h2 {
+            font: 700 1.55rem/1.15 'Playfair Display', Georgia, serif;
+            color: var(--ink);
+        }
+        .card .lead {
+            margin: 6px 0 22px;
+            font-size: .92rem;
+            color: var(--muted);
+        }
+
+        .field { margin-bottom: 16px; }
+        .field label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: .82rem;
+            font-weight: 600;
+            color: var(--ink);
+        }
+        .input-shell { position: relative; }
+        .input-shell svg.icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            width: 18px;
+            height: 18px;
+            transform: translateY(-50%);
+            color: var(--muted);
+            pointer-events: none;
+            transition: color .2s ease;
+        }
+        .input-shell input {
+            width: 100%;
+            height: 48px;
+            padding: 0 44px 0 42px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #fff;
+            font: 500 .98rem 'DM Sans', system-ui, sans-serif;
+            color: var(--ink);
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+        .input-shell input::placeholder { color: #b3aaa1; }
+        .input-shell input:hover { border-color: #d6c8b5; }
+        .input-shell input:focus {
+            outline: none;
+            border-color: var(--tomato);
+            box-shadow: 0 0 0 4px rgba(214, 71, 46, .14);
+        }
+        .input-shell:focus-within svg.icon { color: var(--tomato); }
+
+        .toggle-pass {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            width: 36px;
+            height: 36px;
+            display: grid;
+            place-items: center;
+            transform: translateY(-50%);
+            border: none;
+            border-radius: 9px;
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            transition: background .15s ease, color .15s ease;
+        }
+        .toggle-pass:hover { background: rgba(20, 20, 20, .06); color: var(--ink); }
+        .toggle-pass:focus-visible { outline: 2px solid var(--tomato); outline-offset: 1px; }
+        .toggle-pass svg { width: 19px; height: 19px; }
+
+        .btn-login {
+            width: 100%;
+            height: 50px;
+            margin-top: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+            border-radius: 12px;
+            background: var(--ink);
+            color: #fff;
+            font: 700 .98rem 'DM Sans', system-ui, sans-serif;
+            letter-spacing: .02em;
+            cursor: pointer;
+            transition: background .2s ease, transform .1s ease, box-shadow .2s ease;
+        }
+        .btn-login:hover { background: var(--tomato); box-shadow: 0 12px 24px rgba(214, 71, 46, .28); }
+        .btn-login:active { transform: scale(.98); }
+        .btn-login:focus-visible { outline: 3px solid var(--tomato-light); outline-offset: 3px; }
+        .btn-login:disabled { opacity: .7; cursor: wait; background: var(--ink-soft); box-shadow: none; }
+        .btn-login .spinner {
+            width: 17px;
+            height: 17px;
+            display: none;
+            border: 2px solid rgba(255, 255, 255, .35);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin .7s linear infinite;
+        }
+        .btn-login.is-loading .spinner { display: inline-block; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .secure-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            margin-top: 18px;
+            font-size: .78rem;
+            color: var(--muted);
+        }
+        .secure-note svg { width: 14px; height: 14px; }
+
+        .back-link {
+            display: block;
+            margin-top: 22px;
+            text-align: center;
+            font-size: .85rem;
+            color: rgba(255, 255, 255, .6);
+            text-decoration: none;
+            transition: color .2s ease;
+        }
+        .back-link:hover { color: #fff; }
+
+        /* ---------- Apparition douce de la carte ---------- */
+        .brand, .card { animation: rise .6s ease-out both; }
+        .card { animation-delay: .1s; }
+        @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ---------- Notifications (toasts) de app.js ---------- */
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 380px;
+        }
+        .toast {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 14px 16px;
+            border-radius: 11px;
+            background: var(--paper);
+            box-shadow: 0 14px 34px rgba(0, 0, 0, .35);
+            border-left: 4px solid var(--muted);
+            font-size: .9rem;
+            line-height: 1.4;
+            color: var(--text);
+            opacity: 0;
+            transform: translateX(30px);
+            transition: opacity .35s ease, transform .35s ease;
+        }
+        .toast-visible { opacity: 1; transform: translateX(0); }
+        .toast-success { border-left-color: var(--success); }
+        .toast-success .toast-icon { color: var(--success); }
+        .toast-error { border-left-color: var(--danger); }
+        .toast-error .toast-icon { color: var(--danger); }
+        .toast-info { border-left-color: var(--tomato); }
+        .toast-info .toast-icon { color: var(--tomato); }
+        .toast-icon svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; }
+        .toast-text { flex: 1; }
+        .toast-close { background: none; border: none; font-size: 1.1rem; line-height: 1; cursor: pointer; color: var(--muted); padding: 0; }
+        .toast-close:hover { color: var(--ink); }
+
+        @media (max-width: 480px) {
+            .card { padding: 26px 20px 22px; }
+            #toast-container { left: 16px; right: 16px; max-width: none; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .brand, .card { animation: none; }
+            .btn-login .spinner { animation-duration: 1.6s; }
+        }
+    </style>
 </head>
 <body>
-    <div class="auth-container">
-        <div class="auth-box">
-            <h2>QR Menu</h2>
-            <h3>Connexion</h3>
+    <main class="login-wrap">
+        <header class="brand">
+            <span class="brand-mark">QR MENU</span>
+            <h1>Tavolino</h1>
+            <p>Espace administrateur</p>
+            <div class="brand-rule" aria-hidden="true"></div>
+        </header>
 
-            <div id="auth-message" class="message hidden"></div>
+        <section class="card">
+            <h2>Connexion</h2>
+            <p class="lead">Connectez-vous pour gérer votre menu.</p>
 
-            <form id="login-form">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
+            <form id="login-form" novalidate>
+                <div class="field">
+                    <label for="email">Adresse e-mail</label>
+                    <div class="input-shell">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>
+                        <input type="email" id="email" name="email" placeholder="vous@exemple.com" autocomplete="username" autofocus required>
+                    </div>
                 </div>
 
-                <div class="form-group">
+                <div class="field">
                     <label for="password">Mot de passe</label>
-                    <input type="password" id="password" name="password" required>
+                    <div class="input-shell">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10.5" width="16" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>
+                        <input type="password" id="password" name="password" placeholder="Votre mot de passe" autocomplete="current-password" required>
+                        <button type="button" class="toggle-pass" id="toggle-pass" aria-label="Afficher le mot de passe" aria-pressed="false">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
+                    </div>
                 </div>
 
-                <button type="submit" class="btn-primary">Se connecter</button>
+                <button type="submit" class="btn-login" id="login-btn">
+                    <span class="spinner" aria-hidden="true"></span>
+                    <span class="btn-label">Se connecter</span>
+                </button>
             </form>
 
-            <p class="auth-link">
-                Pas de compte? <a href="#register">Créer un compte</a>
+            <p class="secure-note">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v6c0 4.2 2.9 7.2 7 9 4.1-1.8 7-4.8 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+                Accès réservé à l'administrateur
             </p>
-        </div>
-    </div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabaseClient.js"></script>
-<script src="js/app.js"></script>
-<script src="js/auth.js"></script>
+        </section>
+
+        <a class="back-link" href="menu.html">&larr; Voir le menu client</a>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabaseClient.js?v=2"></script>
+    <script src="js/app.js?v=2"></script>
+    <script src="js/auth.js?v=3"></script>
+    <script>
+        // Afficher / masquer le mot de passe
+        (function () {
+            var btn = document.getElementById('toggle-pass');
+            var input = document.getElementById('password');
+            if (!btn || !input) return;
+            btn.addEventListener('click', function () {
+                var show = input.type === 'password';
+                input.type = show ? 'text' : 'password';
+                btn.setAttribute('aria-pressed', String(show));
+                btn.setAttribute('aria-label', show ? 'Masquer le mot de passe' : 'Afficher le mot de passe');
+                input.focus();
+            });
+        })();
+    </script>
 </body>
 </html>
