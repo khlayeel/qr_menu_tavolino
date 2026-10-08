@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log('[Dashboard] Initialisation');
 
     if (!(await Auth.isLoggedIn())) {
-        window.location.href = '/login.html';
+        window.location.href = 'login.html';
         return;
     }
 
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelector('.nav-link.logout')?.addEventListener('click', async (e) => {
         e.preventDefault();
         await Auth.logout();
-        window.location.href = '/login.html';
+        window.location.href = 'login.html';
     });
 });
 
@@ -343,6 +343,14 @@ function openCategoryModal(category = null) {
     document.getElementById('category-name-en').value = category ? (category.name.en || '') : '';
     document.getElementById('category-name-ar').value = category ? (category.name.ar || '') : '';
 
+    // La description peut être vide, un texte simple (ancien format) ou un objet {fr,en,ar}.
+    const sub = category && category.subtitle
+        ? (typeof category.subtitle === 'string' ? { fr: category.subtitle } : category.subtitle)
+        : {};
+    document.getElementById('category-subtitle-fr').value = sub.fr || '';
+    document.getElementById('category-subtitle-en').value = sub.en || '';
+    document.getElementById('category-subtitle-ar').value = sub.ar || '';
+
     document.getElementById('category-modal').classList.remove('hidden');
 }
 
@@ -388,11 +396,18 @@ async function handleCategorySubmit(e) {
 
     const name = { fr, en: en || null, ar: ar || null };
 
+    const subFr = document.getElementById('category-subtitle-fr').value.trim();
+    const subEn = document.getElementById('category-subtitle-en').value.trim();
+    const subAr = document.getElementById('category-subtitle-ar').value.trim();
+    const subtitle = (subFr || subEn || subAr)
+        ? { fr: subFr || null, en: subEn || null, ar: subAr || null }
+        : null;
+
     try {
         if (editingCategoryId) {
             const { data, error } = await supabaseClient
                 .from('categories')
-                .update({ name })
+                .update({ name, subtitle })
                 .eq('id', editingCategoryId)
                 .select()
                 .single();
@@ -402,7 +417,7 @@ async function handleCategorySubmit(e) {
         } else {
             const { data, error } = await supabaseClient
                 .from('categories')
-                .insert({ cafe_id: currentCafe.id, name, position: categories.length })
+                .insert({ cafe_id: currentCafe.id, name, subtitle, position: categories.length })
                 .select()
                 .single();
             if (error) throw error;
@@ -549,7 +564,7 @@ async function handleProductSubmit(e) {
    Nécessite la librairie qrcode.js (voir instructions HTML). */
 async function loadQRCode() {
     try {
-        const menuUrl = `${window.location.origin}/menu.html?cafe=${currentCafe.slug}`;
+        const menuUrl = new URL(`menu.html?cafe=${currentCafe.slug}`, window.location.href).href;
         const canvas = document.createElement('canvas');
         await QRCode.toCanvas(canvas, menuUrl, { width: 300 });
         const dataUrl = canvas.toDataURL('image/png');

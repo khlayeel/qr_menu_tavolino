@@ -187,6 +187,18 @@
                     <label for="category-name-ar">الاسم (العربية)</label>
                     <input type="text" id="category-name-ar" placeholder="قهوة" dir="rtl">
                 </div>
+                <div class="field">
+                    <label for="category-subtitle-fr">Description (Français) <small>— facultatif</small></label>
+                    <textarea id="category-subtitle-fr" rows="2" placeholder="Facultatif"></textarea>
+                </div>
+                <div class="field">
+                    <label for="category-subtitle-en">Description (English) <small>— optional</small></label>
+                    <textarea id="category-subtitle-en" rows="2" placeholder="Optional"></textarea>
+                </div>
+                <div class="field">
+                    <label for="category-subtitle-ar">الوصف (العربية) <small>— اختياري</small></label>
+                    <textarea id="category-subtitle-ar" rows="2" placeholder="اختياري" dir="rtl"></textarea>
+                </div>
                 <div class="form-actions">
                     <button type="button" class="btn-secondary" onclick="closeCategoryModal()">Annuler</button>
                     <button type="submit" class="btn-primary">Enregistrer</button>
@@ -254,6 +266,6 @@
     <script src="js/supabaseClient.js?v=1"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
     <script src="js/app.js?v=2"></script>
-    <script src="js/dashboard.js?v=7"></script>
+    <script src="js/dashboard.js?v=9"></script>
 </body>
 </html>

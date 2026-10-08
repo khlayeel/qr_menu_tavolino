@@ -218,7 +218,7 @@ function initCardTilt(card) {
 
 function getCafeSlugFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('cafe') || 'demo';
+    return urlParams.get('cafe') || 'bahri';
 }
 
 function localized(value) {
@@ -404,7 +404,7 @@ const categorySections = allCategories.map((category) => ({
             <div class="category-heading">
                 <div class="category-heading-text">
                     <h3 id="category-${section.id}">${localized(section.name)}</h3>
-                    ${section.subtitle ? `
+                    ${section.subtitle && localized(section.subtitle) ? `
                     <div class="category-subtitle-wrap">
                         <span class="category-subtitle-rule" aria-hidden="true"></span>
                         <p class="category-subtitle">${localized(section.subtitle)}</p>

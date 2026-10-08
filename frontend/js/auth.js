@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Si l'utilisateur est déjà connecté, rediriger vers dashboard
     if (await Auth.isLoggedIn()) {
-        window.location.href = '/dashboard.html';
+        window.location.href = 'dashboard.html';
     }
 });
 
@@ -34,7 +34,7 @@ async function handleLogin(e) {
         Utils.showMessage('Connexion réussie!', 'success', 1500);
 
         setTimeout(() => {
-            window.location.href = '/dashboard.html';
+            window.location.href = 'dashboard.html';
         }, 1500);
     } catch (error) {
         console.error('[Auth] Login error:', error);
@@ -45,5 +45,5 @@ async function handleLogin(e) {
 // Déconnexion
 async function logout() {
     await Auth.logout();
-    window.location.href = '/login.html';
+    window.location.href = 'login.html';
 }
